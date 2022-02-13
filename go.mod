@@ -1,4 +1,4 @@
-module torbratsberg/game
+module torbratsberg/raydodger
 
 go 1.17
 
