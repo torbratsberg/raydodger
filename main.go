@@ -131,9 +131,9 @@ func (g *Game) Run() {
 			break
 		}
 
-		if !g.GameOver {
-			g.Win.Clear(pixel.RGB(0, 0, 0))
+		g.Win.Clear(pixel.RGB(0, 0, 0))
 
+		if !g.GameOver {
 			// Redraw our rectangles
 			for i := range g.Obstacles {
 				g.Obstacles[i].Draw(g.Win)
@@ -141,6 +141,9 @@ func (g *Game) Run() {
 
 			// Redraw our rays
 			for i, ray := range g.Rays {
+				if ray.Pos.X > ws {
+					g.GameOver = true
+				}
 				if ray.HasCollided == false {
 					g.Rays[i].Pos.X += g.RaySpeed
 					g.Rays[i].imd.Push(pixel.V(ray.Pos.X, ray.Pos.Y))
@@ -193,6 +196,9 @@ func (g *Game) Run() {
 				// Reset to the previous position
 				g.PlayerStats = prev
 			}
+		} else {
+			g.Player.Circle(ps, 1)
+			g.Player.Draw(g.Win)
 		}
 		// Update window
 		g.Win.Update()
